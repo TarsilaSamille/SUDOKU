@@ -1,6 +1,11 @@
 #include <iostream>
 #include <algorithm>
 #include <sstream>
+#include <fstream>
+#include <string>
+#include <vector>
+using namespace std;
+
 #define EMPTY short(0)
 #define SIZE 9
 
@@ -137,15 +142,44 @@ int main(void)
         }
         };
 
-    for ( int i{0}; i < n_boards ; ++i )
-    {
-        std::cout << "Board #" << (i+1) << ": \n";
-        print( board[i] );
-        std::cout << "Is valid? " << std::boolalpha << is_valid( board[i] ) << std::endl;
-        std::cout << "\n";
+    // for ( int i{0}; i < n_boards ; ++i )
+    // {
+    //     std::cout << "Board #" << (i+1) << ": \n";
+    //     print( board[i] );
+    //     std::cout << "Is valid? " << std::boolalpha << is_valid( board[i] ) << std::endl;
+    //     std::cout << "\n";
+    // }
+    string line;
+  ifstream myfile ("numeros.txt");
+    string boardss[SIZE][SIZE] ;
+
+  if (myfile.is_open())
+  {
+    for(int i = 0; i < SIZE-1; i++){
+        for(int j = 0; j < SIZE-1; j++){
+            while ( getline (myfile,line) ){
+                boardss[i][j] = line;
+            }
+        }
+    }
+    myfile.close();
+  }
+
+  else cout << "Unable to open file"; 
+
+   for(int i = 0; i < SIZE-1; i++){
+        for(int j = 0; j < SIZE-1; j++){
+            cout << boardss[i][j];
+        }
     }
 
-    
+    short boardShort[SIZE][SIZE] ;
 
-    return 0;
+    for(int i = 0; i < SIZE-1; i++){
+        for(int j = 0; j < SIZE-1; j++){
+            boardShort[i][j] = boost::lexical_cast<short>(boardss[i][j]);
+        }
+    }
+    print(boardShort);
+  return 0;
 }
