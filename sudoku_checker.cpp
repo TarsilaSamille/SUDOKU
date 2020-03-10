@@ -47,6 +47,38 @@ bool is_valid( short b[SIZE][SIZE] )
     return true; 
 }
 
+short** ler_arquivo( string nome )
+{
+    string line;
+    ifstream myfile (nome);
+    string boardss[SIZE] ;
+    short board2[SIZE][SIZE];
+    int myint;
+    vector<string> tokens;
+    int x=0;
+
+    if (myfile.is_open()){
+        while ( getline (myfile,line) ){
+            boardss[x] += line;
+            x++;
+        }
+        myfile.close();
+    }
+
+   else cout << "Unable to open file"; 
+
+    for(int i = 0; i < SIZE; i++){
+        istringstream tokenizer {  boardss[i] };
+        string token;
+        while (tokenizer >> token){
+            tokens.push_back(token);
+        }
+        for(int j = 0; j < SIZE; j++){
+            myint = std::stoi(tokens[j+(9*i)]);
+            board2[i][j]=myint;
+        }
+    }
+}
 
 int main(void)
 {
@@ -149,37 +181,36 @@ int main(void)
     //     std::cout << "Is valid? " << std::boolalpha << is_valid( board[i] ) << std::endl;
     //     std::cout << "\n";
     // }
+
     string line;
-  ifstream myfile ("numeros.txt");
-    string boardss[SIZE][SIZE] ;
+    ifstream myfile ("numeros.txt");
+    string boardss[SIZE] ;
+    short board2[SIZE][SIZE];
+    int myint;
+    vector<string> tokens;
+    int x=0;
 
-  if (myfile.is_open())
-  {
-    for(int i = 0; i < SIZE-1; i++){
-        for(int j = 0; j < SIZE-1; j++){
-            while ( getline (myfile,line) ){
-                boardss[i][j] = line;
-            }
+    if (myfile.is_open()){
+        while ( getline (myfile,line) ){
+            boardss[x] += line;
+            x++;
         }
-    }
-    myfile.close();
-  }
-
-  else cout << "Unable to open file"; 
-
-   for(int i = 0; i < SIZE-1; i++){
-        for(int j = 0; j < SIZE-1; j++){
-            cout << boardss[i][j];
-        }
+        myfile.close();
     }
 
-    short boardShort[SIZE][SIZE] ;
+   else cout << "Unable to open file"; 
 
-    for(int i = 0; i < SIZE-1; i++){
-        for(int j = 0; j < SIZE-1; j++){
-            boardShort[i][j] = boost::lexical_cast<short>(boardss[i][j]);
+    for(int i = 0; i < SIZE; i++){
+        istringstream tokenizer {  boardss[i] };
+        string token;
+        while (tokenizer >> token){
+            tokens.push_back(token);
+        }
+        for(int j = 0; j < SIZE; j++){
+            myint = std::stoi(tokens[j+(9*i)]);
+            board2[i][j]=myint;
         }
     }
-    print(boardShort);
+    print(board2);
   return 0;
 }
